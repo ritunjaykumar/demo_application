@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'common_theme_config.dart';
+import 'font_family.dart';
+
+
 
 final textTheme = const TextTheme().copyWith(
-  displayLarge: TextStyle(
+  displayLarge: const TextStyle(
     debugLabel: 'englishLike displayLarge 2021',
     inherit: true,
     fontSize: 57,
@@ -12,9 +14,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.12,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  displayMedium: TextStyle(
+  displayMedium: const TextStyle(
       debugLabel: 'englishLike displayMedium 2021',
       inherit: true,
       fontSize: 45,
@@ -23,8 +25,9 @@ final textTheme = const TextTheme().copyWith(
       height: 1.16,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
-      fontFamily: FontFamily.roboto.familyName),
-  displaySmall: TextStyle(
+      fontFamily: FontFamily.sfProfFont,
+  ),
+  displaySmall:const  TextStyle(
     debugLabel: 'englishLike displaySmall 2021',
     inherit: true,
     fontSize: 36,
@@ -33,9 +36,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.22,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  headlineLarge: TextStyle(
+  headlineLarge: const TextStyle(
     debugLabel: 'englishLike headlineLarge 2021',
     inherit: true,
     fontSize: 32,
@@ -44,9 +47,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.25,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  headlineMedium: TextStyle(
+  headlineMedium: const TextStyle(
     debugLabel: 'englishLike headlineMedium 2021',
     inherit: true,
     fontSize: 28,
@@ -55,9 +58,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.29,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  headlineSmall: TextStyle(
+  headlineSmall: const TextStyle(
     debugLabel: 'englishLike headlineSmall 2021',
     inherit: true,
     fontSize: 24,
@@ -66,9 +69,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.33,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  titleLarge: TextStyle(
+  titleLarge: const TextStyle(
     debugLabel: 'englishLike titleLarge 2021',
     inherit: true,
     fontSize: 22,
@@ -77,9 +80,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.27,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  titleMedium: TextStyle(
+  titleMedium: const TextStyle(
     debugLabel: 'englishLike titleMedium 2021',
     inherit: true,
     fontSize: 16,
@@ -88,9 +91,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.50,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  titleSmall: TextStyle(
+  titleSmall: const TextStyle(
     debugLabel: 'englishLike titleSmall 2021',
     inherit: true,
     fontSize: 14,
@@ -99,9 +102,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.43,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.roboto.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  labelLarge: TextStyle(
+  labelLarge: const TextStyle(
     debugLabel: 'englishLike labelLarge 2021',
     inherit: true,
     fontSize: 14,
@@ -110,9 +113,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.43,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  labelMedium: TextStyle(
+  labelMedium: const TextStyle(
     debugLabel: 'englishLike labelMedium 2021',
     inherit: true,
     fontSize: 12,
@@ -121,9 +124,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.33,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  labelSmall: TextStyle(
+  labelSmall: const TextStyle(
     debugLabel: 'englishLike labelSmall 2021',
     inherit: true,
     fontSize: 12,
@@ -132,9 +135,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.45,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  bodyLarge: TextStyle(
+  bodyLarge: const TextStyle(
     debugLabel: 'englishLike bodyLarge 2021',
     inherit: true,
     fontSize: 16,
@@ -143,9 +146,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.50,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  bodyMedium: TextStyle(
+  bodyMedium:const  TextStyle(
     debugLabel: 'englishLike bodyMedium 2021',
     inherit: true,
     fontSize: 14,
@@ -154,9 +157,9 @@ final textTheme = const TextTheme().copyWith(
     height: 1.43,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
-  bodySmall: TextStyle(
+  bodySmall: const TextStyle(
     debugLabel: 'englishLike bodySmall 2021',
     inherit: true,
     fontSize: 12,
@@ -165,6 +168,6 @@ final textTheme = const TextTheme().copyWith(
     height: 1.33,
     textBaseline: TextBaseline.alphabetic,
     leadingDistribution: TextLeadingDistribution.even,
-    fontFamily: FontFamily.openSans.familyName,
+    fontFamily: FontFamily.sfProfFont,
   ),
 );

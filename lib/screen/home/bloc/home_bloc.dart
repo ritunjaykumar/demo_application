@@ -36,12 +36,15 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
 
   Future<void> _getAllPersonDetail(GetAllPerson event, Emitter<HomeState> emit) async {
     if (loadData == false) return;
+    showDismissProgressDialog(true);
     (await repository.getPersons(event.pageNo)).fold(
       (Failure failure) {
+        showDismissProgressDialog(false);
         showSnackBar(failure);
         emit(state.copyWith(progressState: ProgressState.error));
       },
       (PersonInfo persons) {
+        showDismissProgressDialog(false);
         personList.addAll(persons.data);
         loadData = persons.data.isNotEmpty;
         pageNo++;
@@ -55,15 +58,28 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   }
 
   Future<void> _getPersonDetail(GetPerson event, Emitter<HomeState> emit) async {
+    progressDialog.show();
     (await repository.getPerson(event.personId)).fold(
       (Failure failure) {
+        progressDialog.dismiss();
         showSnackBar(failure);
         emit(state.copyWith(progressState: ProgressState.error));
       },
       (Person person) {
-        print('person: $person');
+        progressDialog.dismiss();
+        debugPrint('person: $person');
         context.pushNamed(RouterPath.detailScreen, extra: person);
       },
     );
+  }
+
+  void showDismissProgressDialog(bool show) {
+    if (pageNo > 1) {
+      if (show) {
+        progressDialog.show();
+      } else {
+        progressDialog.dismiss();
+      }
+    }
   }
 }

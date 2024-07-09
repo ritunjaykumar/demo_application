@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../config/router/go_router_config.dart';
+import '../config/theme/theme_config.dart';
 import 'initializer.dart';
 
 class MyApp extends StatelessWidget {
@@ -14,10 +15,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routerConfig: routerConfig.goRouter,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.light,
     );
   }
 }

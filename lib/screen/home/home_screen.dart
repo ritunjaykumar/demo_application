@@ -1,4 +1,6 @@
+import 'package:demo_application/screen/base/base_bloc.dart';
 import 'package:demo_application/screen/home/bloc/home_bloc.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,35 +36,43 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (ctx, state) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Person List')),
+            appBar: AppBar(
+              title: const Text('Person List'),
+              scrolledUnderElevation: 0,
+              forceMaterialTransparency: true,
+            ),
             body: NotificationListener<ScrollNotification>(
               onNotification: (notification) {
-                if (notification is ScrollEndNotification &&
-                    notification.metrics.extentAfter == 0) {
+                if (notification is ScrollEndNotification && notification.metrics.extentAfter == 0) {
                   ctx.read<HomeBloc>().add(GetAllPerson(state.pageNo));
                 }
                 return false;
               },
-              child: ListView.builder(
-                itemCount: state.persons.length,
-                itemBuilder: (ctx, i) {
-                  var person = state.persons[i];
-                  return ListTile(
-                      title: Text('${person.firstname} ${person.lastname}'),
-                      subtitle: Text(person.email),
-                      leading: Hero(
-                        tag: person.toString(),
-                        child: CircularImage(
-                          imageUrl: person.profile,
-                          height: 80,
-                          width: 60,
+              child: switch (state.progressState) {
+                (ProgressState.loading) => const Center(child: CircularProgressIndicator()),
+                (ProgressState.error) => const Center(child: Text('Error')),
+                (ProgressState.success) => ListView.builder(
+                    itemCount: state.persons.length,
+                    itemBuilder: (ctx, i) {
+                      var person = state.persons[i];
+                      return ListTile(
+                        title: Text('${person.firstname} ${person.lastname}'),
+                        subtitle: Text(person.email),
+                        leading: Hero(
+                          tag: person.toString(),
+                          child: CircularImage(
+                            imageUrl: person.profile,
+                            height: 80,
+                            width: 60,
+                          ),
                         ),
-                      ),
-                      onTap: () {
-                        ctx.read<HomeBloc>().add(GetPerson(person.id));
-                      });
-                },
-              ),
+                        onTap: () {
+                          ctx.read<HomeBloc>().add(GetPerson(person.id));
+                        },
+                      );
+                    },
+                  )
+              },
             ),
           );
         },
