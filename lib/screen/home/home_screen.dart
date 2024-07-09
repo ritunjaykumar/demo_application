@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (ctx, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Person List'),
+              title: const Text('Persons'),
               scrolledUnderElevation: 0,
               forceMaterialTransparency: true,
             ),
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: Text('${person.firstname} ${person.lastname}'),
                         subtitle: Text(person.email),
                         leading: Hero(
-                          tag: person.toString(),
+                          tag: person.id.toString(),
                           child: CircularImage(
                             imageUrl: person.profile,
                             height: 80,
