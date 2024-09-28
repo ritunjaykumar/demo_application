@@ -10,11 +10,17 @@ class NewsSourceImpl extends NewsSource {
   });
 
   @override
-  Future<NewsHeadlineRespDto> getNewsHeadline(String country, String? query, String? category) {
-    if (category != null) {
-      query = null;
-    }
-
-    return newsApi.getNewsHeadline(country, query, category);
+  Future<NewsHeadlineRespDto> getNewsHeadline(
+      String query, int pageSize, int page, String? date, String? to) {
+    return newsApi.getNewsHeadline(query, pageSize, page, date, to);
   }
+
+// @override
+// Future<NewsHeadlineRespDto> getNewsHeadline(String country, String? query, String? category) {
+//   if (category != null) {
+//     query = null;
+//   }
+//
+//   return newsApi.getNewsHeadline(country, query, category);
+// }
 }

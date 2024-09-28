@@ -1,10 +1,11 @@
-const int noInternetConnectionStatusCode = 1;
-const int timeoutStatusCode = 2;
-const int connectionStatusCode = 3;
-const int certificateStatusCode = 3;
-const int unknownStatusCode = 4;
-const int sessionExpiredStatusCode = 419;
-const int defaultStatus = 0;
+const String noInternetConnectionStatusCode = '1';
+const String timeoutStatusCode = '2';
+const String connectionStatusCode = '3';
+const String certificateStatusCode = '3';
+const String unknownStatusCode = '4';
+const String sessionExpiredStatusCode = '419';
+const String defaultStatus = 'error';
+
 
 /////
 const String noInternetConnectionError = 'NO INTERNET CONNECTION';
@@ -29,7 +30,7 @@ const String unknownErrorMessage =
     'We\'re sorry, but something went wrong on our end. Please try again.';
 
 class Failure {
-  final int status;
+  final String status;
   final String error;
   final String message;
   final DateTime? timestamp;
@@ -86,7 +87,7 @@ class Failure {
 
   Failure.fromJson(Map<String, dynamic> json)
       : this(
-          status: json['status'] as int? ?? unknownStatusCode,
+          status: json['status'] as String? ?? unknownStatusCode,
           error: json['error'] as String? ?? unknownError,
           message: json['message'] as String? ?? unknownErrorMessage,
           // timestamp: json['timestamp'] == null ? null : DateTime.parse(json['timestamp'] as String),

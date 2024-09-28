@@ -217,7 +217,7 @@ class NewsHeadlineRespData {
   final String? description;
   @JsonKey(name: 'url', defaultValue: '')
   final String url;
-  @JsonKey(name: 'image')
+  @JsonKey(name: 'urlToImage')
   final String? image;
   @JsonKey(name: 'publishedAt')
   final DateTime? publishDate;

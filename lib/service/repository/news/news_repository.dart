@@ -4,5 +4,5 @@ import 'package:demo_application/service/error/error_model.dart';
 
 abstract class NewsRepository {
   Future<Either<Failure, List<NewsHeadline>>> getNewsHeadline(
-      String country, String query, String? category);
+      String query, int pageSize, int page, String? fromDate, String? toDate);
 }

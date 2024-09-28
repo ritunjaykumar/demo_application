@@ -18,10 +18,10 @@ class SettingProvider extends BaseProvider {
     if (temperature == settingDetail.temperature) {
       return;
     }
+    notifyListeners();
     settingDetail.reload = true;
     settingDetail.temperature = temperature;
     sharedPreferenceStorage.saveTemperature(temperature);
-    notifyListeners();
   }
 
   void onCategoryChange(String? category) {
@@ -35,8 +35,6 @@ class SettingProvider extends BaseProvider {
       sharedPreferenceStorage.saveCategory(settingDetail.category);
       settingDetail.category = category;
     }
-    settingDetail.reload = true;
-
     notifyListeners();
   }
 }

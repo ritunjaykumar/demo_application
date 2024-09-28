@@ -25,12 +25,12 @@ class NewsRepositoryImpl extends NewsRepository {
 
   @override
   Future<Either<Failure, List<NewsHeadline>>> getNewsHeadline(
-      String country, String query, String? category) async {
+      String query, int pageSize, int page, String? fromDate, String? toDate) async {
     if (await network.checkNetworkStatus == false) {
       return Left(Failure.noInternet());
     }
     try {
-      final response = await newsSource.getNewsHeadline(country, query, category);
+      final response = await newsSource.getNewsHeadline(query, pageSize, page, fromDate, toDate);
       return Right(response.articles.map(mapper.newsHeadline).toList());
     } catch (error) {
       return Left(errorHandler.handleError(error));

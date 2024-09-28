@@ -86,6 +86,31 @@ class WeatherDetail {
     required this.areaName,
     required this.id,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WeatherDetail &&
+          runtimeType == other.runtimeType &&
+          coord == other.coord &&
+          weathers == other.weathers &&
+          weatherInfo == other.weatherInfo &&
+          wind == other.wind &&
+          systemInfo == other.systemInfo &&
+          datetime == other.datetime &&
+          areaName == other.areaName &&
+          id == other.id;
+
+  @override
+  int get hashCode =>
+      coord.hashCode ^
+      weathers.hashCode ^
+      weatherInfo.hashCode ^
+      wind.hashCode ^
+      systemInfo.hashCode ^
+      datetime.hashCode ^
+      areaName.hashCode ^
+      id.hashCode;
 }
 
 class ForecastDetail {
@@ -100,6 +125,19 @@ class ForecastDetail {
     required this.wind,
     this.dateTime,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ForecastDetail &&
+          runtimeType == other.runtimeType &&
+          weathers == other.weathers &&
+          weatherInfo == other.weatherInfo &&
+          wind == other.wind &&
+          dateTime == other.dateTime;
+
+  @override
+  int get hashCode => weathers.hashCode ^ weatherInfo.hashCode ^ wind.hashCode ^ dateTime.hashCode;
 }
 
 class City {
@@ -118,6 +156,27 @@ class City {
     required this.sunrise,
     required this.sunset,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is City &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          areaName == other.areaName &&
+          coord == other.coord &&
+          country == other.country &&
+          sunrise == other.sunrise &&
+          sunset == other.sunset;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      areaName.hashCode ^
+      coord.hashCode ^
+      country.hashCode ^
+      sunrise.hashCode ^
+      sunset.hashCode;
 }
 
 class Forecast {
@@ -128,6 +187,17 @@ class Forecast {
     required this.forecastDetails,
     required this.city,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Forecast &&
+          runtimeType == other.runtimeType &&
+          forecastDetails == other.forecastDetails &&
+          city == other.city;
+
+  @override
+  int get hashCode => forecastDetails.hashCode ^ city.hashCode;
 }
 
 class NewsHeadline {
@@ -148,4 +218,27 @@ class NewsHeadline {
     this.publishDate,
     this.content,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NewsHeadline &&
+          runtimeType == other.runtimeType &&
+          author == other.author &&
+          title == other.title &&
+          description == other.description &&
+          url == other.url &&
+          image == other.image &&
+          publishDate == other.publishDate &&
+          content == other.content;
+
+  @override
+  int get hashCode =>
+      author.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
+      url.hashCode ^
+      image.hashCode ^
+      publishDate.hashCode ^
+      content.hashCode;
 }

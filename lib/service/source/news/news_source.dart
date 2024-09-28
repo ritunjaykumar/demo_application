@@ -1,7 +1,6 @@
-
-
 import 'package:demo_application/model/response/response.dart';
 
-abstract class NewsSource{
-  Future<NewsHeadlineRespDto> getNewsHeadline(String country,String? query,String? category);
+abstract class NewsSource {
+  Future<NewsHeadlineRespDto> getNewsHeadline(
+      String query, int pageSize, int page, String? date, String? to);
 }

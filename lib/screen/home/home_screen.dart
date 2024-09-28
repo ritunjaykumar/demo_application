@@ -1,4 +1,3 @@
-import 'package:demo_application/assets/image_asset.dart';
 import 'package:demo_application/assets/svg_asset.dart';
 import 'package:demo_application/screen/base/base_provider.dart';
 import 'package:demo_application/screen/home/home_provider.dart';
@@ -6,8 +5,8 @@ import 'package:demo_application/screen/home/weather_model.dart';
 import 'package:demo_application/screen/setting/setting_model.dart';
 import 'package:demo_application/service/error/error_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../widget/common_widget.dart';
 
@@ -47,9 +46,11 @@ class _HomeScreenMainState extends State<_HomeScreenMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Weather'),
-        centerTitle: true,
         elevation: 0,
         forceMaterialTransparency: true,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: colorScheme.surface,
+        ),
         actions: [
           IconButton(
             onPressed: context.read<HomeProvider>().onSettingClick,
@@ -91,21 +92,16 @@ class _WeatherWidget extends StatelessWidget {
     final WeatherDetail weather = weatherDetail!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _LocationWidget(systemInfo: weather.systemInfo, area: weather.areaName),
-            const VerticalSpace(height: 12),
-            _TemperatureWidget(weather: weather.weathers[0], weatherInfo: weather.weatherInfo),
-            const VerticalSpace(height: 12),
-            _MinMaxTemperatureWidget(weatherInfo: weather.weatherInfo),
-            const VerticalSpace(height: 12),
-            const _ForecastWidget(),
-            const VerticalSpace(height: 12),
-            const _NewsWidget(),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _LocationWidget(systemInfo: weather.systemInfo, area: weather.areaName),
+          const VerticalSpace(height: 12),
+          const TemperatureWidget(),
+          const VerticalSpace(height: 8),
+          _MinMaxTemperatureWidget(weatherInfo: weather.weatherInfo),
+          const _ForecastWidget(),
+        ],
       ),
     );
   }
@@ -124,74 +120,22 @@ class _LocationWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.location_on),
-                  const HorizontalSpace(width: 2),
-                  Text(area, style: textTheme.titleLarge),
-                  Text(
-                    ', ${systemInfo.country}',
-                    style: textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              Text(area, style: textTheme.titleLarge),
+              Text(
+                ', ${systemInfo.country}',
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              DateWidget(dateTime: DateTime.now(), style: textTheme.titleMedium)
             ],
           ),
+          DateWidget(dateTime: DateTime.now(), style: textTheme.titleMedium),
         ],
-      ),
-    );
-  }
-}
-
-class _TemperatureWidget extends StatelessWidget {
-  const _TemperatureWidget({required this.weather, required this.weatherInfo});
-
-  final Weather weather;
-  final WeatherInfo weatherInfo;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-    return Card(
-      color: colorScheme.primaryFixedDim,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${weatherInfo.temperature} ${context.read<HomeProvider>().settingDetail.symbol}',
-                  style: textTheme.displayLarge?.copyWith(
-                    fontSize: 45,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const VerticalSpace(height: 2),
-                Text(weather.main, style: textTheme.titleLarge),
-                const VerticalSpace(height: 2),
-                Text(weather.description, style: textTheme.titleMedium),
-              ],
-            ),
-            Flexible(
-              child: WeatherIcon(
-                icon: weather.icon,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -206,50 +150,45 @@ class _MinMaxTemperatureWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    return Card(
-      color: colorScheme.primaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _getTile(
-                    textTheme,
-                    'Min Temp',
-                    '${weatherInfo.temperatureMin} ${context.read<HomeProvider>().settingDetail.symbol}',
-                    SvgAsset.minTemp),
-                const VerticalSpace(height: 8),
-                _getTile(
-                    textTheme,
-                    'Max Temp',
-                    '${weatherInfo.temperatureMax} ${context.read<HomeProvider>().settingDetail.symbol}',
-                    SvgAsset.maxTemp),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _getTile(
-                    textTheme, 'Air Pressure', '${weatherInfo.pressure}', SvgAsset.pressure, 30),
-                const VerticalSpace(height: 8),
-                _getTile(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _getTile(
                   textTheme,
-                  'Humidity',
-                  '${weatherInfo.humidity}',
-                  SvgAsset.humidity,
-                ),
-              ],
-            ),
-          ],
-        ),
+                  'Min Temp',
+                  '${weatherInfo.temperatureMin} ${context.read<HomeProvider>().settingDetail.symbol}',
+                  SvgAsset.minTemp,
+                  colorScheme.onSurface),
+              const VerticalSpace(height: 16),
+              _getTile(
+                  textTheme,
+                  'Max Temp',
+                  '${weatherInfo.temperatureMax} ${context.read<HomeProvider>().settingDetail.symbol}',
+                  SvgAsset.maxTemp,
+                  colorScheme.onSurface),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _getTile(textTheme, 'Air Pressure', '${weatherInfo.pressure}', SvgAsset.pressure,
+                  colorScheme.onSurface, 30),
+              const VerticalSpace(height: 16),
+              _getTile(textTheme, 'Humidity ', '${weatherInfo.humidity}', SvgAsset.humidity,
+                  colorScheme.onSurface),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Widget _getTile(TextTheme textTheme, String title, String value, String path,
+  Widget _getTile(TextTheme textTheme, String title, String value, String path, Color color,
       [double iconSize = 40]) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -257,6 +196,7 @@ class _MinMaxTemperatureWidget extends StatelessWidget {
         SvgImage(
           path: path,
           size: iconSize,
+          color: color,
         ),
         const HorizontalSpace(width: 8),
         Column(
@@ -278,108 +218,144 @@ class _ForecastWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    return Card(
-      color: colorScheme.secondaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Selector<HomeProvider, (List<ForecastDetail>, SettingDetail)>(
-          builder: (ctx, (List<ForecastDetail>, SettingDetail) bodies, child) {
-            return bodies.$1.isEmpty
-                ? const SizedBox()
-                : SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                      itemCount: bodies.$1.length,
-                      itemBuilder: (ctx, i) {
-                        var body = bodies.$1[i];
-                        return ListTile(
-                          title: DateWidget(
-                            dateTime: body.dateTime,
-                            style: textTheme.titleMedium,
-                          ),
-                          leading: CircleAvatar(
-                            child: WeatherIcon(
-                              icon: body.weathers[0].icon,
-                            ),
-                          ),
-                          subtitle: DateTimeWidget(
-                            dateTime: body.dateTime,
-                          ),
-                          trailing: Text(
-                            '${body.weatherInfo.temperatureMin} / ${body.weatherInfo.temperatureMax} ${bodies.$2.symbol}',
-                            style: textTheme.titleSmall,
-                          ),
-                        );
-                      },
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Forecast', style: textTheme.titleLarge),
+              TextButton(
+                onPressed: context.read<HomeProvider>().onArticleClick,
+                style: ButtonStyle(
+                  textStyle: WidgetStatePropertyAll(
+                    textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
                     ),
-                  );
-          },
-          selector: (_, HomeProvider provider) =>
-              (provider.forecastDetails, provider.settingDetail),
-        ),
+                  ),
+                ),
+                child: const Text('Articles'),
+              )
+            ],
+          ),
+          const SizedBox(height: 6),
+          Selector<HomeProvider, (List<ForecastDetail>, SettingDetail)>(
+            builder: (ctx, (List<ForecastDetail>, SettingDetail) bodies, child) {
+              return bodies.$1.isEmpty
+                  ? const SizedBox()
+                  : Flexible(
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          itemCount: bodies.$1.length,
+                          itemBuilder: (ctx, i) {
+                            var body = bodies.$1[i];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: DateWidget(
+                                      dateTime: body.dateTime,
+                                      style: textTheme.titleMedium,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 4,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          child: WeatherIcon(
+                                            icon: body.weathers[0].icon,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${body.weatherInfo.temperatureMin} / ${body.weatherInfo.temperatureMax} ${bodies.$2.symbol}',
+                                          style: textTheme.titleSmall,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+            },
+            selector: (_, HomeProvider provider) =>
+                (provider.forecastDetails, provider.settingDetail),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _NewsWidget extends StatelessWidget {
-  const _NewsWidget();
+class TemperatureWidget extends StatelessWidget {
+  const TemperatureWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    return Selector<HomeProvider, List<NewsHeadline>>(
-      builder: (ctx, headlines, child) {
-        return headlines.isEmpty
-            ? const SizedBox()
-            : SizedBox(
-                height: headlines.length > 7 ? 400 : 250,
-                child: Column(
-                  children: [
-                    Text('Headlines', style: textTheme.titleLarge),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: headlines.length,
-                        itemBuilder: (_, i) {
-                          var headline = headlines[i];
-                          return ListTile(
-                            title: Text(
-                              headline.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onTap: () {
-                              launchUrl(Uri.parse(headline.url));
-                            },
-                            subtitle: DateWidget(
-                              dateTime: headline.publishDate,
-                              indDateFormat: true,
-                            ),
-                            leading: headline.image == null
-                                ? Image.asset(
-                                    ImageAsset.news,
-                                    height: 60,
-                                  )
-                                : Image.network(
-                                    headline.image!,
-                                    height: 60,
-                                    errorBuilder: (_, obj, stack) {
-                                      return Image.asset(
-                                        ImageAsset.news,
-                                        height: 60,
-                                      );
-                                    },
-                                  ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+    return Selector<HomeProvider, WeatherDetail>(
+      builder: (_, widgetDetail, child) {
+        final weather = widgetDetail.weathers[0];
+        final weatherInfo = widgetDetail.weatherInfo;
+        return Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                color: colorScheme.primaryFixedDim,
+                child: WeatherIcon(
+                  icon: weather.icon,
+                  size: 120,
                 ),
-              );
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${weatherInfo.temperature}',
+                    style: textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Icon(
+                      Icons.circle,
+                      size: 14,
+                    ),
+                  ),
+                  Text(
+                    context.read<HomeProvider>().settingDetail.symbol,
+                    style: textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const VerticalSpace(height: 2),
+              Text(
+                '${weather.main} - ${weather.description}',
+                style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        );
       },
-      selector: (ctx, provider) => provider.headlines,
+      selector: (_, homeProvider) => homeProvider.weatherDetail!,
     );
   }
 }

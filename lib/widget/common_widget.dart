@@ -177,17 +177,33 @@ class DateTimeWidget extends StatelessWidget {
     super.key,
     required this.dateTime,
     this.style,
+    this.dateTimeFormat = DateTimeFormat.timeAP,
   });
 
   final DateTime? dateTime;
   final TextStyle? style;
+  final DateTimeFormat dateTimeFormat;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Text(
-      dateTime == null ? 'NA' : dateTime!.timeAP,
+      dateTime == null ? 'NA' : formatDate(),
       style: style ?? textTheme.bodyMedium,
     );
   }
+
+  String formatDate() {
+    return switch (dateTimeFormat) {
+      DateTimeFormat.ddmmyy => dateTime!.ddmmyyy,
+      DateTimeFormat.time => dateTime!.time,
+      DateTimeFormat.timeAP => dateTime!.timeAP,
+      DateTimeFormat.timeSecond => dateTime!.timeSecond,
+      DateTimeFormat.monthName => dateTime!.monthName,
+      DateTimeFormat.dateDayFormat => dateTime!.dateDayFormat,
+      DateTimeFormat.indDateFormat => dateTime!.indDateFormat,
+    };
+  }
 }
+
+enum DateTimeFormat { ddmmyy, time, timeAP, timeSecond, monthName, dateDayFormat, indDateFormat }

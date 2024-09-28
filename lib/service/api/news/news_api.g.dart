@@ -25,15 +25,19 @@ class _NewsApi implements NewsApi {
 
   @override
   Future<NewsHeadlineRespDto> getNewsHeadline(
-    String country,
-    String? query,
-    String? category,
+    String query,
+    int pageSize,
+    int page,
+    String? date,
+    String? to,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'country': country,
       r'q': query,
-      r'category': category,
+      r'pageSize': pageSize,
+      r'page': page,
+      r'from': date,
+      r'to': to,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -45,7 +49,7 @@ class _NewsApi implements NewsApi {
     )
         .compose(
           _dio.options,
-          '/top-headlines',
+          '/everything',
           queryParameters: queryParameters,
           data: _data,
         )

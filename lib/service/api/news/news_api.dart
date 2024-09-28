@@ -11,10 +11,12 @@ part 'news_api.g.dart';
 abstract class NewsApi {
   factory NewsApi(Dio dio, {String baseUrl}) = _NewsApi;
 
-  @GET('/top-headlines')
+  @GET('/everything')
   Future<NewsHeadlineRespDto> getNewsHeadline(
-    @Query('country') String country,
-    @Query('q') String? query,
-    @Query('category') String? category,
+    @Query('q') String query,
+    @Query('pageSize') int pageSize,
+    @Query('page') int page,
+    @Query('from') String? date,
+    @Query('to') String? to,
   );
 }

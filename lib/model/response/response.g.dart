@@ -199,7 +199,7 @@ NewsHeadlineRespData _$NewsHeadlineRespDataFromJson(
       json['title'] as String? ?? '',
       json['description'] as String?,
       json['url'] as String? ?? '',
-      json['image'] as String?,
+      json['urlToImage'] as String?,
       json['publishedAt'] == null
           ? null
           : DateTime.parse(json['publishedAt'] as String),
@@ -213,7 +213,7 @@ Map<String, dynamic> _$NewsHeadlineRespDataToJson(
       'title': instance.title,
       'description': instance.description,
       'url': instance.url,
-      'image': instance.image,
+      'urlToImage': instance.image,
       'publishedAt': instance.publishDate?.toIso8601String(),
       'content': instance.content,
     };

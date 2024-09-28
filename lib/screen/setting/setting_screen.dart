@@ -1,11 +1,7 @@
 import 'package:demo_application/screen/setting/setting_model.dart';
 import 'package:demo_application/screen/setting/setting_provider.dart';
-import 'package:demo_application/widget/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../assets/image_asset.dart';
-import '../../assets/svg_asset.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -44,7 +40,7 @@ class _SettingScreenMainState extends State<_SettingScreenMain> {
                 return ListTile(
                   title: const Text('Weather Unit'),
                   subtitle: const Text('Change Weather Unit'),
-                  leading: const CircleAvatar(child: SvgImage(path: SvgAsset.maxTemp)),
+                  leading: const CircleAvatar(child: Icon(Icons.ac_unit_sharp)),
                   trailing: DropdownButton<String>(
                     borderRadius: BorderRadius.circular(12),
                     value: settingDetail.temperature,
@@ -64,17 +60,12 @@ class _SettingScreenMainState extends State<_SettingScreenMain> {
               return ListTile(
                 title: const Text('News Category'),
                 subtitle: const Text('Select News Category'),
-                leading: CircleAvatar(
-                    child: Image.asset(
-                  ImageAsset.news,
-                  width: 20,
-                  height: 20,
-                )),
+                leading: const CircleAvatar(child: Icon(Icons.newspaper)),
                 trailing: DropdownButton<String?>(
                   borderRadius: BorderRadius.circular(12),
                   value: data.$2.category ?? 'none',
                   items: data.$1
-                      .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+                      .map((e) => DropdownMenuItem<String>(value: e, child: Text(capitalize(e))))
                       .toList(),
                   onChanged: (value) => context.read<SettingProvider>().onCategoryChange(value!),
                 ),
@@ -91,4 +82,8 @@ class _SettingScreenMainState extends State<_SettingScreenMain> {
       ),
     );
   }
+}
+
+String capitalize(String value) {
+  return '${value[0].toUpperCase()}${value.substring(1)}';
 }

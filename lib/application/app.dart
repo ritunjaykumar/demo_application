@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final GoRouterConfig routerConfig = instance<GoRouterConfig>();
     return MaterialApp.router(
-      title: 'Flutter Demo',
+      title: 'Weather App',
       debugShowCheckedModeBanner: false,
       routerConfig: routerConfig.goRouter,
       theme: lightTheme,

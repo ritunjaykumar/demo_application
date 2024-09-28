@@ -1,3 +1,4 @@
+import 'package:demo_application/screen/article/article_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,10 @@ abstract final class RouterPath {
   static const String homeScreen = '/';
   static const String detailScreen = '/detailScreen';
   static const String settingScreen = '/settingScreen';
+  static const String articleScreen = '/articleScreen/:temp/:unit';
+
+  static String articleScreenPath(double temperature, String unit) =>
+      '/articleScreen/:$temperature/:$unit';
 }
 
 final class GoRouterConfig {
@@ -34,5 +39,21 @@ final class GoRouterConfig {
       path: RouterPath.settingScreen,
       builder: (ctx, state) => const SettingScreen(),
     ),
+    GoRoute(
+      path: RouterPath.articleScreen,
+      builder: (ctx, state) {
+        double temperature = _parseDouble(state.pathParameters['temp']);
+        String unit = _extractPath(state.pathParameters['unit']);
+        return ArticleScreen(temperature: temperature, unit: unit);
+      },
+    ),
   ];
+
+  String _extractPath(String? path) {
+    return path!.replaceAll(':', '');
+  }
+
+  double _parseDouble(String? path) {
+    return double.parse(_extractPath(path));
+  }
 }

@@ -15,6 +15,6 @@ extension DateTimeExt on DateTime {
 
   String get indDateFormat => Util.getDateFormatter('dd-MM-yyyy hh:mm:ss').format(this);
 
-  String get dateDayFormat => Util.getDateFormatter('dd MMM E').format(this);
+  String get dateDayFormat => Util.getDateFormatter('E, MMM dd').format(this);
 }
 

@@ -1,6 +1,7 @@
 import 'package:demo_application/application/initializer.dart';
 import 'package:demo_application/screen/home/weather_model.dart';
 import 'package:demo_application/service/error/error_model.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../config/router/go_router_config.dart';
@@ -11,7 +12,6 @@ class HomeProvider extends BaseProvider {
 
   WeatherDetail? _weatherDetail;
   Forecast? _forecast;
-  List<NewsHeadline> _headlines = [];
 
   Future<void> getCurrentWeatherInfo() async {
     progressState = ProgressStatus.loading;
@@ -21,7 +21,7 @@ class HomeProvider extends BaseProvider {
       location = await _getCurrentLocation();
     } catch (error) {
       failure = Failure(
-        status: 100,
+        status: '100',
         error: 'Geo Location',
         message: error.toString(),
       );
@@ -41,7 +41,6 @@ class HomeProvider extends BaseProvider {
       (WeatherDetail weatherDetail) {
         _weatherDetail = weatherDetail;
         progressState = ProgressStatus.success;
-        _getNews(weatherDetail.systemInfo.country, weatherDetail.weatherInfo.temperature);
         notifyListeners();
       },
     );
@@ -55,7 +54,18 @@ class HomeProvider extends BaseProvider {
         showSnackBar(failure);
       },
       (Forecast forecast) {
-        _forecast = forecast;
+        List<ForecastDetail> tempForecast = [];
+        tempForecast.add(forecast.forecastDetails[0]);
+
+        var forecastDetail = forecast.forecastDetails;
+        for (int i = 1; i < forecastDetail.length; i++) {
+          if (!(DateUtils.dateOnly(forecastDetail[i - 1].dateTime!)
+              .isAtSameMomentAs(DateUtils.dateOnly(forecastDetail[i].dateTime!)))) {
+            tempForecast.add(forecastDetail[i]);
+          }
+        }
+
+        _forecast = Forecast(forecastDetails: tempForecast, city: forecast.city);
         notifyListeners();
       },
     );
@@ -73,24 +83,19 @@ class HomeProvider extends BaseProvider {
     }
   }
 
-  Future<void> _getNews(String country, double temp) async {
-    (await newsRepository.getNewsHeadline(country, query(temp), settingDetail.category)).fold(
-      (Failure failure) {
-        showSnackBar(failure);
-      },
-      (List<NewsHeadline> headlines) {
-        _headlines = headlines;
-        notifyListeners();
-      },
-    );
-  }
-
   Future<void> onSettingClick() async {
     settingDetail.reload = false;
     await context.pushNamed(RouterPath.settingScreen);
-    if(settingDetail.reload) {
+    if (settingDetail.reload) {
       getCurrentWeatherInfo();
     }
+  }
+
+  Future<void> onArticleClick() async {
+    context.push(RouterPath.articleScreenPath(
+      _weatherDetail!.weatherInfo.temperature,
+      settingDetail.symbol,
+    ));
   }
 
   Forecast? get forecast => _forecast;
@@ -98,30 +103,4 @@ class HomeProvider extends BaseProvider {
   List<ForecastDetail> get forecastDetails => _forecast == null ? [] : _forecast!.forecastDetails;
 
   WeatherDetail? get weatherDetail => _weatherDetail;
-
-  List<NewsHeadline> get headlines => _headlines;
-
-  var depressingKeywords = [
-    'death',
-    'terror' /*'crisis',  'war', 'tragedy'*/
-  ];
-  var fearKeywords = [
-    'terror' /* 'attack', ,'danger', 'fear'*/
-  ];
-  var positiveKeywords = [
-    'win',
-    'happy', /*'success', 'celebrate'*/
-  ];
-
-  String query(double temperature) {
-    String query;
-    if (temperature < 10) {
-      query = depressingKeywords.join(' OR ');
-    } else if (temperature > 30) {
-      query = fearKeywords.join(' OR ');
-    } else {
-      query = positiveKeywords.join(' OR ');
-    }
-    return Uri.encodeQueryComponent(query);
-  }
 }
