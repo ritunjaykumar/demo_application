@@ -23,6 +23,7 @@ import '../config/router/go_router_config.dart';
 import '../model/mapper/mapper_imp.dart';
 import '../screen/setting/setting_model.dart';
 import '../service/native/geo_location.dart';
+import '../service/sentiment/sentiment_service.dart';
 
 final GetIt instance = GetIt.instance;
 final Logger logger = Logger(
@@ -56,13 +57,16 @@ Future<void> initializer() async {
   ///
   NewsDioConfig newsDioConfig = NewsDioConfig();
   NewsApi newsApi = NewsApi(newsDioConfig.initDio());
-  NewsSource newsSource = NewsSourceImpl(newsApi: newsApi);
+  NewsSource newsSource = NewsSourceImpl(newsApi: newsApi, memoryCache: memoryCache);
+  SentimentAnalysis sentimentAnalysis = SentimentAnalysis(mapper);
   NewsRepository newsRepository = NewsRepositoryImpl(
     network: network,
     errorHandler: errorHandler,
     mapper: mapper,
     newsSource: newsSource,
+    sentimentAnalysis: sentimentAnalysis,
   );
+
   instance.registerLazySingleton<NewsRepository>(() => newsRepository);
   SharedPreferences sharedPreference = await SharedPreferences.getInstance();
   SharedPreferenceStorage sharedPreferenceStorage = SharedPreferenceStorage(sharedPreference);

@@ -41,12 +41,11 @@ class _HomeScreenMainState extends State<_HomeScreenMain> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Weather'),
-        elevation: 0,
+        // elevation: 0,
         forceMaterialTransparency: true,
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarColor: colorScheme.surface,
@@ -116,7 +115,6 @@ class _LocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -217,7 +215,6 @@ class _ForecastWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,12 +310,9 @@ class TemperatureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Card(
-                color: colorScheme.primaryFixedDim,
-                child: WeatherIcon(
-                  icon: weather.icon,
-                  size: 120,
-                ),
+              WeatherIcon(
+                icon: weather.icon,
+                size: 120,
               ),
               const SizedBox(height: 12),
               Row(

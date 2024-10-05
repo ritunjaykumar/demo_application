@@ -3,6 +3,8 @@ import 'package:demo_application/screen/setting/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../widget/custom_arc.dart';
+
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
 
@@ -26,8 +28,6 @@ class _SettingScreenMain extends StatefulWidget {
 class _SettingScreenMainState extends State<_SettingScreenMain> {
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Setting'),
@@ -87,3 +87,5 @@ class _SettingScreenMainState extends State<_SettingScreenMain> {
 String capitalize(String value) {
   return '${value[0].toUpperCase()}${value.substring(1)}';
 }
+
+

@@ -19,4 +19,11 @@ abstract class NewsApi {
     @Query('from') String? date,
     @Query('to') String? to,
   );
+
+  @GET('/top-headlines')
+  Future<NewsHeadlineRespDto> getHeadline(
+    @Query('country') String? country,
+    @Query('pageSize') int pageSize,
+    @Query('page') int page,
+  );
 }

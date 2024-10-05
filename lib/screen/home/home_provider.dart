@@ -92,10 +92,8 @@ class HomeProvider extends BaseProvider {
   }
 
   Future<void> onArticleClick() async {
-    context.push(RouterPath.articleScreenPath(
-      _weatherDetail!.weatherInfo.temperature,
-      settingDetail.symbol,
-    ));
+    context.push(RouterPath.articleScreenPath(_weatherDetail!.weatherInfo.temperature,
+        settingDetail.symbol, _weatherDetail!.systemInfo.country));
   }
 
   Forecast? get forecast => _forecast;

@@ -10,10 +10,10 @@ abstract final class RouterPath {
   static const String homeScreen = '/';
   static const String detailScreen = '/detailScreen';
   static const String settingScreen = '/settingScreen';
-  static const String articleScreen = '/articleScreen/:temp/:unit';
+  static const String articleScreen = '/articleScreen/:temp/:unit/:country';
 
-  static String articleScreenPath(double temperature, String unit) =>
-      '/articleScreen/:$temperature/:$unit';
+  static String articleScreenPath(double temperature, String unit, String? country) =>
+      '/articleScreen/:$temperature/:$unit/$country';
 }
 
 final class GoRouterConfig {
@@ -44,7 +44,12 @@ final class GoRouterConfig {
       builder: (ctx, state) {
         double temperature = _parseDouble(state.pathParameters['temp']);
         String unit = _extractPath(state.pathParameters['unit']);
-        return ArticleScreen(temperature: temperature, unit: unit);
+        String? country = _extractPath(state.pathParameters['country']);
+        return ArticleScreen(
+          temperature: temperature,
+          unit: unit,
+          country:  country,
+        );
       },
     ),
   ];

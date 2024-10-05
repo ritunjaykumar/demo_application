@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:demo_application/assets/image_asset.dart';
 import 'package:demo_application/screen/article/article_provider.dart';
 import 'package:demo_application/screen/setting/setting_screen.dart';
@@ -9,10 +11,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../home/weather_model.dart';
 
 class ArticleScreen extends StatefulWidget {
-  const ArticleScreen({super.key, required this.temperature, required this.unit});
+  const ArticleScreen({
+    super.key,
+    required this.temperature,
+    required this.unit,
+    required this.country,
+  });
 
   final double temperature;
   final String unit;
+  final String? country;
 
   @override
   State<ArticleScreen> createState() => _ArticleScreenState();
@@ -26,6 +34,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
         context,
         temperature: widget.temperature,
         unit: widget.unit,
+        country: widget.country,
       )..init(),
       child: const _ArticleScreenMain(),
     );
@@ -49,17 +58,16 @@ class _ArticleScreenMainState extends State<_ArticleScreenMain> {
     });
   }
 
-
-  String get title{
-  var category =  context.read<ArticleProvider>().settingDetail.category;
-  return category == null ? '': ' (${capitalize(category)})';
+  String get title {
+    var category = context.read<ArticleProvider>().settingDetail.category;
+    return category == null ? '' : ' (${capitalize(category)})';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Articles$title'),
+        title: Text('Articles$title'),
         elevation: 0,
         forceMaterialTransparency: true,
       ),
@@ -72,7 +80,7 @@ class _ArticleScreenMainState extends State<_ArticleScreenMain> {
               onNotification: (ScrollNotification notification) {
                 if (notification is ScrollEndNotification &&
                     notification.metrics.extentAfter == 0) {
-                  context.read<ArticleProvider>().getNewsPagination();
+                  context.read<ArticleProvider>().getCategoryPagination();
                 }
                 return context.read<ArticleProvider>().cancelPagination;
               },
@@ -98,17 +106,18 @@ class _ArticleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final Widget placeholder = Image.asset(
       ImageAsset.news,
       height: 200,
       width: double.infinity,
       fit: BoxFit.cover,
     );
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     return Card(
+      color: colorScheme.onPrimary,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           launchUrl(Uri.parse(headline.url));
         },
         borderRadius: BorderRadius.circular(12),

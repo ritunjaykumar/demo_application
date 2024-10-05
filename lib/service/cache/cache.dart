@@ -7,6 +7,7 @@ class MemoryCache {
   final Map<String, CacheData<dynamic>> _cacheData = {};
   final String _weatherRespKey = 'weatherRespKey';
   final String _forecastKey = 'forecastKey';
+  final String _headline = '_headline';
 
   WeatherRespDto? getWeatherRespDto(double lat, double lon, String? unit) {
     return _filterData<WeatherRespDto>('$lat$lon${unit ?? ''}$_weatherRespKey');
@@ -23,6 +24,17 @@ class MemoryCache {
 
   void setForecastResp(ForecastRespDto forecast, double lat, double lon, String? unit) {
     _cacheData['$lat$lon${unit ?? ''}$_forecastKey'] = CacheData<ForecastRespDto>(data: forecast);
+  }
+
+  void setHeadline(NewsHeadlineRespDto headline, String query, int pageSize, int page, String? date,
+      String? to) {
+    _cacheData['$_headline$query$pageSize$page${date ?? ''}${to ?? ''}'] =
+        CacheData<NewsHeadlineRespDto>(data: headline);
+  }
+
+  NewsHeadlineRespDto? getHeadline(String query, int pageSize, int page, String? date, String? to) {
+    return _filterData<NewsHeadlineRespDto>(
+        '$_headline$query$pageSize$page${date ?? ''}${to ?? ''}');
   }
 
   T? _filterData<T>(String key) {
